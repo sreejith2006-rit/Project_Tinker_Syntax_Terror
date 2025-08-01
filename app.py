@@ -3,6 +3,20 @@ import cv2
 import numpy as np
 import os
 import uuid
+import google.generativeai as genai
+
+# Initialize Gemini with your API key
+genai.configure(api_key="AIzaSyB5mVSzSyXXoe4338nQ48mLOpOQG1UCSsI")
+def generate_malayalam_prediction(features):
+    model = genai.GenerativeModel(model_name='gemini-2.5-flash')
+
+    prompt = f"""Make predictions as per the given features:
+{features}
+
+Malayalam prediction:"""
+
+    response = model.generate_content(prompt)
+    return response.text.strip()
 
 app = Flask(__name__)
 # Configurable Canny thresholds
@@ -37,8 +51,12 @@ def upload_palm():
     file.save(filepath)
 
     # Analyze and get result path
-    result_path = analyze_palm(filepath)
-    return render_template("result.html", result_path=result_path)
+    result = analyze_palm(filepath)
+    return render_template(
+                "result.html",
+                result_path=result["image_path"],
+                prediction=result["prediction"]
+            )
 
 def analyze_palm(image_path):
     img = cv2.imread(image_path)
@@ -65,8 +83,18 @@ def analyze_palm(image_path):
     result_filename = os.path.basename(image_path)
     result_path = os.path.join(RESULT_FOLDER, result_filename)
     cv2.imwrite(result_path, dimmed)
+    feature_summary = f"""
+    Number of contour clusters: {len(contours)}
+    Image shape: {img.shape}
+    Gray tone variance: {np.var(gray):.2f}
+    Presence of strong edges: {'Yes' if np.mean(edges) > 50 else 'No'}
+    """
+    prediction = generate_malayalam_prediction(feature_summary)
 
-    return f"results/{result_filename}"
+    return {
+        "image_path": f"results/{result_filename}",
+        "prediction": prediction
+    }
 
 
 
