@@ -8,6 +8,17 @@ UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/upload', methods=['POST'])
+def analyze_palm(image_path):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    edges = cv2.Canny(blur, threshold1=30, threshold2=100)
+
+    result_path = os.path.join('static/results', os.path.basename(image_path))
+    cv2.imwrite(result_path, edges)
+
+    return result_path  # You can pass this path to the template
+
 def upload_palm():
     if 'palmImage' not in request.files:
         return "No image part", 400
