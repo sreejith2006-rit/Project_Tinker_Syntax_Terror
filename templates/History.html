@@ -66,12 +66,33 @@
                 >About</a
               >
             </div>
-            <button
-              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#51a328] text-[#f9fbf9] text-sm font-bold leading-normal tracking-[0.015em]"
-            >
-              <span class="truncate">Upload Palm Image</span>
-            </button>
-          </div>
+          <form
+  action="/upload"
+  method="POST"
+  enctype="multipart/form-data"
+  class="flex items-center gap-2"
+>
+  <input
+    type="file"
+    name="palmImage"
+    accept="image/*"
+    class="hidden"
+    id="palmInput"
+  />
+  <button
+    type="button"
+    onclick="document.getElementById('palmInput').click()"
+    class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#51a328] text-[#f9fbf9] text-sm font-bold"
+  >
+    Upload Palm Image
+  </button>
+  <button
+    type="submit"
+    class="ml-2 px-4 py-2 bg-[#51a328] text-[#f9fbf9] rounded-lg font-bold text-sm"
+  >
+    Submit
+  </button>
+</form>
         </header>
 </body>
 </html>

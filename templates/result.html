@@ -2,7 +2,8 @@
 <html lang="ml">
 <head>
   <meta charset="UTF-8" />
-  <title>Palm Analysis Result</title>
+  <title>കൈരേഖാ ഫലം | KaiVismayam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -11,95 +12,122 @@
     }
 
     body {
-      background: linear-gradient(to bottom right, #eef5ee, #d4ecd4);
+      font-family: 'Noto Serif Malayalam', serif;
+      background: linear-gradient(to bottom right, #f3fef3, #e4f6e3);
       color: #131910;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
+      background-image: url('https://www.transparenttextures.com/patterns/foggy-birds.png'); /* Light texture */
     }
 
     .container {
       background-color: #ffffff;
-      max-width: 800px;
+      max-width: 860px;
       width: 100%;
-      padding: 40px 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      padding: 45px 35px;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
       animation: fadeIn 0.8s ease-in-out;
+      border: 3px solid #a0ce84;
     }
 
     h2 {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
-      margin-bottom: 24px;
-      color: #2e4e2e;
+      margin-bottom: 25px;
+      color: #326432;
       text-align: center;
     }
 
     img {
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
       max-width: 100%;
       height: auto;
       transition: transform 0.3s ease;
       display: block;
-      margin: 0 auto 24px;
+      margin: 0 auto 25px;
     }
 
     img:hover {
-      transform: scale(1.02);
+      transform: scale(1.03);
     }
 
     .prediction-box {
-      background-color: #fff8dc;
-      padding: 20px;
+      background: linear-gradient(to right, #fffbe6, #fef4d6);
+      padding: 22px;
       border-left: 6px solid #ff9800;
-      border-radius: 10px;
-      font-size: 18px;
-      line-height: 1.6;
-      color: #444;
+      border-radius: 12px;
+      font-size: 18.5px;
+      line-height: 1.75;
+      color: #3a3a3a;
       margin-top: 20px;
       white-space: pre-wrap;
+      font-weight: 500;
+    }
+
+    .prediction-box strong {
+      color: #d46a00;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .center {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 35px;
     }
 
     .button {
       display: inline-block;
-      background-color: #51a328;
+      background-color: #4ca72e;
       color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: bold;
       text-decoration: none;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .button:hover {
-      background-color: #3b831f;
+      background-color: #3d891f;
+      transform: translateY(-2px);
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .button {
+        font-size: 15px;
+        padding: 12px 24px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>🔍 നിങ്ങളുടെ കയ്യിലെ രേഖകളുടെ വിശകലനം</h2>
-    
+    <h2>🔍 നിങ്ങളുടെ കയ്യിലെ രേഖകളുടെ ഫലവിശകലനം</h2>
+
     <img src="{{ url_for('static', filename=result_path) }}" alt="Palm Analysis Result" />
 
     <div class="prediction-box">
-      <strong>🔮 തമാശാപരമായ പ്രവചനം:</strong><br>
+      <strong>🔮 തമാശാപരമായ പ്രവചനം:</strong>
       {{ prediction }}
     </div>
 
@@ -109,6 +137,7 @@
   </div>
 </body>
 </html>
+
 
 
 

@@ -10,7 +10,12 @@ genai.configure(api_key="AIzaSyB5mVSzSyXXoe4338nQ48mLOpOQG1UCSsI")
 def generate_malayalam_prediction(features):
     model = genai.GenerativeModel(model_name='gemini-2.5-flash')
 
-    prompt = f"""Make predictions as per the given features:
+    prompt = f"""Based on the following palm features, generate an extremely sarcastic, over-the-top, and completely useless life prediction in *Malayalam*.
+
+This should sound like a horoscope gone wrong — filled with absurd logic, impossible twists, and predictions that are so ridiculous they're almost believable. Feel free to exaggerate wildly. The tone should be *mock-serious, **cringe-inducing, and **darkly hilarious*, covering health, love, luck, or career (or all at once).
+
+Your goal: make it sound mystical and wise on the surface, but totally nonsensical underneath — like someone trying to fake being a palm reader after binge-watching conspiracy videos at 2 AM.
+:
 {features}
 
 Malayalam prediction:"""
