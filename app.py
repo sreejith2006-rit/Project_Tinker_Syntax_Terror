@@ -1,4 +1,6 @@
 from flask import Flask, request, render_template
+import json
+from datetime import datetime
 import cv2
 import numpy as np
 import os
@@ -24,6 +26,27 @@ Malayalam prediction:"""
     return response.text.strip()
 
 app = Flask(__name__)
+HISTORY_FILE = "prediction_history.json"
+
+def save_prediction_history(image_path, prediction):
+    entry = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "image_filename": image_path,
+        "prediction": prediction
+    }
+
+    # Load existing history or start fresh
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.append(entry)
+
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
 # Configurable Canny thresholds
 CANNY_LOW = 20
 CANNY_HIGH = 100
@@ -57,6 +80,7 @@ def upload_palm():
 
     # Analyze and get result path
     result = analyze_palm(filepath)
+    save_prediction_history(result["image_path"], result["prediction"])
     return render_template(
                 "result.html",
                 result_path=result["image_path"],
@@ -100,6 +124,19 @@ def analyze_palm(image_path):
         "image_path": f"results/{result_filename}",
         "prediction": prediction
     }
+@app.route('/history')
+def view_history():
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            history = json.load(f)
+    else:
+        history = []
+
+    return render_template("history.html", entries=history)
+@app.route('/about')
+def ab():
+    return render_template('About.html')
+
 
 
 
