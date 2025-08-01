@@ -1,9 +1,13 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, render_template
 import cv2
 import numpy as np
 import os
+import uuid
 
 app = Flask(__name__)
+# Configurable Canny thresholds
+CANNY_LOW = 20
+CANNY_HIGH = 100
 
 UPLOAD_FOLDER = 'static/uploads'
 RESULT_FOLDER = 'static/results'
@@ -25,22 +29,42 @@ def upload_palm():
     file = request.files['palmImage']
     if file.filename == '':
         return "No image selected", 400
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+
+    # Generate unique filename
+    ext = os.path.splitext(file.filename)[1]
+    unique_filename = f"{uuid.uuid4().hex}{ext}"
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(filepath)
 
-    analysis_result = analyze_palm(filepath)
-    return render_template("result.html", result_path=analysis_result)
+    # Analyze and get result path
+    result_path = analyze_palm(filepath)
+    return render_template("result.html", result_path=result_path)
 
-# 🖐️ Helper function: palm line analysis
 def analyze_palm(image_path):
     img = cv2.imread(image_path)
+    if img is None:
+        return "Image not loaded", 400
+
+    original = img.copy()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    edges = cv2.Canny(blur, 30, 100)
+
+    edges = cv2.Canny(blur, CANNY_LOW, CANNY_HIGH)
+
+    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(original, contours, -1, (0, 0, 255), 1)
+
     result_filename = os.path.basename(image_path)
     result_path = os.path.join(RESULT_FOLDER, result_filename)
-    cv2.imwrite(result_path, edges)
+    cv2.imwrite(result_path, original)
 
     return f"results/{result_filename}"
-app.run(debug=True)
+
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 

@@ -1,26 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>result</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet" />
-  </head>
-  <body class="bg-[#f9fbf9] text-[#131910] font-sans">
-    <div class="container mx-auto px-6 py-10">
-      <h2 class="text-2xl font-bold mb-6">🔍 >Highlighted Image</h2>
-      <img
-        src="{{ url_for('static', filename=result_path) }}"
-        class="rounded-lg shadow-lg"
-        alt="Palm Analysis Result"
-      />
+<head>
+  <meta charset="UTF-8" />
+  <title>Palm Analysis Result</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      <div class="mt-8">
-        <a
-          href="/"
-          class="text-white bg-[#51a328] px-4 py-2 rounded-lg font-bold text-sm"
-          >🔙 Go back</a
-        >
-      </div>
+    body {
+      background: linear-gradient(to bottom right, #eef5ee, #d4ecd4);
+      color: #131910;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      max-width: 800px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #2e4e2e;
+      text-align: center;
+    }
+
+    img {
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+      display: block;
+      margin: 0 auto;
+    }
+
+    img:hover {
+      transform: scale(1.02);
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 32px;
+      background-color: #51a328;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #3b831f;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔍 Your Palm Scan Result</h2>
+    <img src="{{ url_for('static', filename=result_path) }}" alt="Palm Analysis Result" />
+
+    <div class="center">
+      <a href="/" class="button">🔙 Go Back</a>
     </div>
-  </body>
+  </div>
+</body>
 </html>
+
+
