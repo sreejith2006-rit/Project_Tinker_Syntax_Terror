@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>result</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet" />
+  </head>
+  <body class="bg-[#f9fbf9] text-[#131910] font-sans">
+    <div class="container mx-auto px-6 py-10">
+      <h2 class="text-2xl font-bold mb-6">🔍 >Highlighted Image</h2>
+      <img
+        src="{{ url_for('static', filename=result_path) }}"
+        class="rounded-lg shadow-lg"
+        alt="Palm Analysis Result"
+      />
+
+      <div class="mt-8">
+        <a
+          href="/"
+          class="text-white bg-[#51a328] px-4 py-2 rounded-lg font-bold text-sm"
+          >🔙 Go back</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
