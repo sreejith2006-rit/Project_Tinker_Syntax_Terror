@@ -45,20 +45,29 @@ def analyze_palm(image_path):
     if img is None:
         return "Image not loaded", 400
 
-    original = img.copy()
+    # Step 1: Preprocessing
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
 
+    # Step 2: Edge detection
     edges = cv2.Canny(blur, CANNY_LOW, CANNY_HIGH)
 
+    # Step 3: Find contours
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(original, contours, -1, (0, 0, 255), 1)
 
+    # Step 4: Dim the original image slightly
+    dimmed = cv2.addWeighted(img, 0.5, np.zeros_like(img), 0.5, 0)  # 50% brightness
+
+    # Step 5: Draw contours in yellow
+    cv2.drawContours(dimmed, contours, -1, (0, 255, 255), 1)  # Yellow lines
+
+    # Step 6: Save and return result path
     result_filename = os.path.basename(image_path)
     result_path = os.path.join(RESULT_FOLDER, result_filename)
-    cv2.imwrite(result_path, original)
+    cv2.imwrite(result_path, dimmed)
 
     return f"results/{result_filename}"
+
 
 
 
