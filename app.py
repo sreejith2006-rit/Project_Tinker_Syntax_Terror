@@ -8,7 +8,13 @@ import uuid
 import google.generativeai as genai
 
 # Initialize Gemini with your API key
-genai.configure(api_key="AIzaSyB5mVSzSyXXoe4338nQ48mLOpOQG1UCSsI")
+from dotenv import load_dotenv
+
+
+load_dotenv()
+API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=API_KEY)
+
 def generate_malayalam_prediction(features):
     model = genai.GenerativeModel(model_name='gemini-2.5-flash')
 
